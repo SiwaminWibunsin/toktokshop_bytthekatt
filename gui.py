@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
+from bot import run_bot  # ต้องแน่ใจว่า bot.py มีฟังก์ชัน run_bot ที่อัพเดตแล้ว
 
 def start_bot():
     try:
@@ -7,14 +8,13 @@ def start_bot():
         password = password_entry.get()
         product_url = url_entry.get()
         quantity = int(quantity_entry.get())
-        basket_id = basket_entry.get()
+        basket = basket_entry.get()
         card_number = card_number_entry.get()
         expiry_date = expiry_date_entry.get()
         cvv = cvv_entry.get()
         
         # เรียกใช้ฟังก์ชันหลักเพื่อเริ่มต้นบอท
-        from bot import run_bot
-        run_bot(username, password, product_url, quantity, basket_id, card_number, expiry_date, cvv)
+        run_bot(username, password, product_url, quantity, basket, card_number, expiry_date, cvv)
         messagebox.showinfo("Success", "Bot has successfully completed the task!")
     except Exception as e:
         messagebox.showerror("Error", str(e))
@@ -26,7 +26,7 @@ tk.Label(app, text="Username").grid(row=0)
 tk.Label(app, text="Password").grid(row=1)
 tk.Label(app, text="Product URL").grid(row=2)
 tk.Label(app, text="Quantity").grid(row=3)
-tk.Label(app, text="Basket ID").grid(row=4)
+tk.Label(app, text="Basket").grid(row=4)
 tk.Label(app, text="Card Number").grid(row=5)
 tk.Label(app, text="Expiry Date").grid(row=6)
 tk.Label(app, text="CVV").grid(row=7)

@@ -17,44 +17,57 @@ def login(driver, username, password):
     login_button.click()
     time.sleep(5)
 
-def add_to_cart(driver, product_url, quantity, basket_id):
+def add_to_cart(driver, product_url, quantity, basket):
     driver.get(product_url)
     time.sleep(2)
     for _ in range(quantity):
-        basket_button = driver.find_element(By.XPATH, f'//button[@data-basket-id="{basket_id}"]')
+        # คลิกเลือกสินค้าจากตะกร้า
+        basket_button = driver.find_element(By.XPATH, f'//xpath ของปุ่มเลือกตะกร้า[{basket}]')
         basket_button.click()
-        time.sleep(0.5)
-        add_button = driver.find_element(By.XPATH, 'xpath ของปุ่มเพิ่มสินค้าลงตะกร้า')
+        time.sleep(1)
+        
+        # เลือกตัวเลือกสินค้า
+        option_button = driver.find_element(By.XPATH, 'xpath ของตัวเลือกสินค้า')
+        option_button.click()
+        time.sleep(1)
+
+        add_button = driver.find_element(By.XPATH, '//button[contains(text(), "ซื้อ")]')
         add_button.click()
         time.sleep(random.uniform(0.5, 1.5))
 
 def checkout(driver, card_number, expiry_date, cvv):
-    cart_url = 'url ของหน้าตะกร้าสินค้า'
+    cart_url = 'https://www.tiktok.com/cart'
     driver.get(cart_url)
     time.sleep(2)
     
-    checkout_button = driver.find_element(By.XPATH, 'xpath ของปุ่มชำระเงิน')
+    checkout_button = driver.find_element(By.XPATH, '//button[contains(text(), "ทำการสั่งซื้อ")]')
     checkout_button.click()
     time.sleep(2)
     
-    card_number_input = driver.find_element(By.NAME, 'card_number')
-    card_number_input.send_keys(card_number)
+    # เลือกวิธีการชำระเงิน
+    payment_option = driver.find_element(By.XPATH, 'xpath ของวิธีการชำระเงินที่ต้องการ')
+    payment_option.click()
+    time.sleep(1)
+
+    if payment_option == "Visa":
+        card_number_input = driver.find_element(By.NAME, 'card_number')
+        card_number_input.send_keys(card_number)
+        
+        expiry_date_input = driver.find_element(By.NAME, 'expiry_date')
+        expiry_date_input.send_keys(expiry_date)
+        
+        cvv_input = driver.find_element(By.NAME, 'cvv')
+        cvv_input.send_keys(cvv)
     
-    expiry_date_input = driver.find_element(By.NAME, 'expiry_date')
-    expiry_date_input.send_keys(expiry_date)
-    
-    cvv_input = driver.find_element(By.NAME, 'cvv')
-    cvv_input.send_keys(cvv)
-    
-    confirm_button = driver.find_element(By.XPATH, 'xpath ของปุ่มยืนยันการจ่ายเงิน')
+    confirm_button = driver.find_element(By.XPATH, '//button[contains(text(), "ทำการสั่งซื้อ")]')
     confirm_button.click()
 
-def run_bot(username, password, product_url, quantity, basket_id, card_number, expiry_date, cvv):
-    driver = webdriver.Chrome(executable_path='/path/to/chromedriver')
+def run_bot(username, password, product_url, quantity, basket, card_number, expiry_date, cvv):
+    driver = webdriver.Chrome(executable_path='path/to/chromedriver')
     
     try:
         login(driver, username, password)
-        add_to_cart(driver, product_url, quantity, basket_id)
+        add_to_cart(driver, product_url, quantity, basket)
         checkout(driver, card_number, expiry_date, cvv)
     finally:
         driver.quit()
