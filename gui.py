@@ -23,7 +23,7 @@ app = tk.Tk()
 app.title("TikTok Shop Bot")
 
 # กำหนดขนาดหน้าจอ GUI
-app.geometry('300x300')
+app.geometry('500x500')
 
 # ปรับแต่งการจัดเรียงองค์ประกอบ
 tk.Label(app, text="Username").grid(row=0, column=0, padx=10, pady=5, sticky='w')
